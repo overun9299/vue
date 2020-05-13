@@ -88,7 +88,8 @@
             console.log(res)
             //保存token
             window.sessionStorage.setItem('token', res.token)
-            // 导航至/home
+
+            // 跳转至主页面
             this.$router.push('/home')
           })
         }
