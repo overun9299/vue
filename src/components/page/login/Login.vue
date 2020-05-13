@@ -90,7 +90,7 @@
             window.sessionStorage.setItem('token', res.token)
 
             // 跳转至主页面
-            this.$router.push('/home')
+            this.$router.push('/container')
           })
         }
       }
