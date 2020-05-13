@@ -17,10 +17,7 @@
                    :collapse="isCollapse">
             <template v-for="route in $router.options.routes" v-if="route.children && route.children.length">
               <template v-for="item in route.children" >
-                <el-menu-item
-                  :key="route.path + '/' + item.path"
-                  :index="item.path"
-                >
+                <el-menu-item :key="route.path + '/' + item.path" :index="item.path">
                   <i class="el-icon-menu"></i>
                   <span slot="title">{{ item.name }}</span>
                 </el-menu-item>
@@ -96,7 +93,8 @@
       data() {
         return {
           username: '',
-          isCollapse: false
+          isCollapse: false,
+          defaultActive: "/person"
         }
       },
       methods: {
@@ -127,6 +125,7 @@
           this.username = user;
         }
       },
+
     }
 </script>
 
