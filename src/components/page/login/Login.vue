@@ -5,7 +5,7 @@
       <div class="avatar_box">
         <img src="../../../assets/logo.png" alt="">
       </div>
-      <el-form :label-position="labelPosition" ref="loginForm" label-width="80px" :model="loginForm" class="login_form">
+      <el-form :label-position="labelPosition" ref="loginForm" :rules="loginFormRules" label-width="80px" :model="loginForm" class="login_form">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="loginForm.username" ></el-input>
         </el-form-item>
@@ -15,7 +15,7 @@
       </el-form>
 
       <el-row>
-        <el-button type="success" plain class="login_button" @click="login">登录</el-button>
+        <el-button type="success" plain class="login_button" @click="login('loginForm')">登录</el-button>
         <el-button type="danger" plain class="revoke_button" @click="resetLoginForm">撤销</el-button>
       </el-row>
 
@@ -31,8 +31,8 @@
             labelPosition: 'left',
 
             loginForm: {
-              username: '',
-              password: ''
+              username: 'admin',
+              password: '123456'
             },
             //表单验证规则
             loginFormRules: {
@@ -62,29 +62,32 @@
         resetLoginForm() {
           //this=>当前组件对象，其中的属性$refs包含了设置的表单ref
           //   console.log(this)
-            console.log("123")
           this.$refs.loginForm.resetFields()
         },
-        login() {
+        login(loginForm) {
           //点击登录的时候先调用validate方法验证表单内容是否有误
-          this.$refs.LoginForm.validate(async valid => {
+          this.$refs[loginForm].validate(async valid => {
             console.log(this.loginFormRules)
+            console.log(123)
+            console.log(valid)
             //如果valid参数为true则验证通过
             if (!valid) {
               return
             }
-
+            var data = new URLSearchParams();
+            data.append('username' , this.loginForm.username);
+            data.append('password' , this.loginForm.password);
             //发送请求进行登录
-            const { data: res } = await this.$http.post('login', this.loginForm)
+            const { data: res } = await this.$http.post('login',data)
             //   console.log(res);
-            if (res.meta.status !== 200) {
-              return this.$message.error('登录失败:' + res.meta.msg) //console.log("登录失败:"+res.meta.msg)
+            if (res.status !== 200) {
+              return this.$message.error('登录失败:' + res.msg) //console.log("登录失败:"+res.meta.msg)
             }
 
             this.$message.success('登录成功')
             console.log(res)
             //保存token
-            window.sessionStorage.setItem('token', res.data.token)
+            window.sessionStorage.setItem('token', res.token)
             // 导航至/home
             this.$router.push('/home')
           })

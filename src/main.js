@@ -13,6 +13,11 @@ import './assets/fonts/iconfont.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import axios from 'axios'
+// 配置请求的跟路径
+axios.defaults.baseURL = 'http://127.0.0.1:9302/excel/'
+Vue.prototype.$http = axios
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
